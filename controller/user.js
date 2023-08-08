@@ -53,14 +53,22 @@ exports.addRecord = async (req, res, next) => {
       Prices = result1?.recordset[0];
     }
     //
-
     /// Find Locality
     var locality = 0;
-    if (localityResult.localit == "locality 01-02") {
+    if (
+      localityResult?.locality == "locality 01-02" ||
+      localityResult?.locality == "locality_1_facility_MRA"
+    ) {
       locality = 1;
-    } else if (localityResult.localit == "Locality 03") {
+    } else if (
+      localityResult?.locality == "Locality 03" ||
+      localityResult?.locality == "locality_3_facility_MRA"
+    ) {
       locality = 3;
-    } else if (localityResult.localit == "Locality 04") {
+    } else if (
+      localityResult?.locality == "Locality 04" ||
+      localityResult?.locality == "locality_4_facility_MRA"
+    ) {
       locality = 4;
     }
 
@@ -152,11 +160,13 @@ exports.createTable = async (req, res, next) => {
 
 exports.allRecords = async (req, res, next) => {
   try {
-    const {barNumber,user_id,}=req.query;
-    console.log(req.params)
-    var query = barNumber=='admin'?'SELECT * FROM procedure_cost_estimate':`SELECT * FROM procedure_cost_estimate WHERE user_id ='${user_id}'`;
-    
-   
+    const { barNumber, user_id } = req.query;
+    console.log(req.params);
+    var query =
+      barNumber == "admin"
+        ? "SELECT * FROM procedure_cost_estimate"
+        : `SELECT * FROM procedure_cost_estimate WHERE user_id ='${user_id}'`;
+
     const result = await sql.query(query);
 
     return res.json({
@@ -174,7 +184,6 @@ exports.allRecords = async (req, res, next) => {
 
 exports.deleteTable = async (req, res, next) => {
   try {
-    
     const query = `DROP TABLE IF EXISTS procedure_cost_estimate;    `;
     const result = await sql.query(query);
 
