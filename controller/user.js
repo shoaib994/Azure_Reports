@@ -23,7 +23,7 @@ exports.getDataA = async (req, res, next) => {
     ////////////////////////////////////////////////////////////////////////
 
     /// Find the Locality
-    const query = `SELECT TOP 1 * FROM locality WHERE city = '${search_city}'`;
+    const query = `SELECT TOP 1 * FROM locality WHERE city = '${city}'`;
     const result = await sql.query(query);
 
     var localityResult = result?.recordset[0];
@@ -37,7 +37,7 @@ exports.getDataA = async (req, res, next) => {
 
     ////////////////////
     // In B Tables
-    const sectionQuery = `SELECT TOP 1 * FROM B_Specification_Surgery WHERE cpt_code = '${cpt}'`;
+    const sectionQuery = `SELECT TOP 1 * FROM B_Specification_Surgery WHERE cpt_code = '${cpt_code}'`;
     const result1 = await sql.query(sectionQuery);
 
     var Prices = result1?.recordset[0];
