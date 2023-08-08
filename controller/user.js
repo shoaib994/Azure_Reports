@@ -5,11 +5,12 @@ const express = require("express");
 const sql = require("mssql");
 
 // Start Database Related Tasks
-exports.getDataA = async (req, res, next) => {
+exports.addRecord = async (req, res, next) => {
   try {
     const search_city = "Alford";
     const cpt = "99600";
     const {
+      user_id,
       name,
       email,
       city,
@@ -17,7 +18,6 @@ exports.getDataA = async (req, res, next) => {
       medical_procedure_type,
       medical_procedure,
       zip_code,
-      user_cost,
     } = req.body;
 
     ////////////////////////////////////////////////////////////////////////
@@ -87,11 +87,12 @@ exports.getDataA = async (req, res, next) => {
 
     // Add Record into DB
     const addRecordquery =
-      "INSERT INTO procedure_cost_estimate (name, email, medical_procedure, medical_procedure_type, zip_code, city, cpt_code, cost) " +
-      "VALUES (@name, @email, @medical_procedure, @medical_procedure_type, @zip_code, @city, @cpt_code, @cost)";
+      "INSERT INTO procedure_cost_estimate (user_id,name, email, medical_procedure, medical_procedure_type, zip_code, city, cpt_code, cost) " +
+      "VALUES (@user_id,@name, @email, @medical_procedure, @medical_procedure_type, @zip_code, @city, @cpt_code, @cost)";
 
     // Prepare the SQL request with parameters
     const request = new sql.Request();
+    request.input("user_id", sql.VarChar, user_id);
     request.input("name", sql.VarChar, name);
     request.input("email", sql.VarChar, email);
     request.input("medical_procedure", sql.VarChar, medical_procedure);
@@ -126,6 +127,7 @@ exports.createTable = async (req, res, next) => {
     const sqlQuery1 = `
     CREATE TABLE procedure_cost_estimate (
       id INT IDENTITY(1,1) PRIMARY KEY,
+      user_id VARCHAR(255),
       name VARCHAR(255),
       email VARCHAR(255),
       medical_procedure VARCHAR(255),
@@ -145,5 +147,43 @@ exports.createTable = async (req, res, next) => {
     });
   } catch (err) {
     return res.json({ message: err.message });
+  }
+};
+
+exports.allRecords = async (req, res, next) => {
+  try {
+    
+    const query = `SELECT * FROM procedure_cost_estimate`;
+    const result = await sql.query(query);
+
+    return res.json({
+      success: true,
+      // addRecord:addRecord,
+      data: result?.recordset,
+
+      // count:(result?.recordset)?.length
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error?.message);
+  }
+};
+
+exports.deleteTable = async (req, res, next) => {
+  try {
+    
+    const query = `DROP TABLE IF EXISTS procedure_cost_estimate;    `;
+    const result = await sql.query(query);
+
+    return res.json({
+      success: true,
+      // addRecord:addRecord,
+      data: result?.recordset,
+
+      // count:(result?.recordset)?.length
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error?.message);
   }
 };

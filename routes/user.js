@@ -2,11 +2,12 @@ const express = require('express');
 
 const router = express.Router();
 
-const { getDataA,createTable} = require('../controller/user');
+const { addRecord,createTable,allRecords,deleteTable} = require('../controller/user');
 
-router.get('/', getDataA);
-router.post('/', getDataA);
-router.get('/table', createTable);
+router.get('/', allRecords);
+router.post('/', addRecord);
+router.delete('/', deleteTable);
+router.post('/table', createTable);
 
 
 
