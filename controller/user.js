@@ -47,7 +47,7 @@ exports.addRecord = async (req, res, next) => {
     // In C Table
 
     if (!Prices) {
-      const sectionQuery = `SELECT TOP 1 * FROM C_Specification_Radiology_more WHERE cpt_code = '${cpt}'`;
+      const sectionQuery = `SELECT TOP 1 * FROM C_Specification_Radiology_more WHERE cpt_code = '${cpt_code}'`;
       const result1 = await sql.query(sectionQuery);
 
       Prices = result1?.recordset[0];
