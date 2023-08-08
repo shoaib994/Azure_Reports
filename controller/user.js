@@ -152,8 +152,16 @@ exports.createTable = async (req, res, next) => {
 
 exports.allRecords = async (req, res, next) => {
   try {
-    
-    const query = `SELECT * FROM procedure_cost_estimate`;
+    const {barNumber,user_id,}=req.query;
+    console.log(req.params)
+    var query = '';
+    if(barNumber=='admin'){
+      query=`SELECT * FROM procedure_cost_estimate `
+    }
+    else{
+      query=`SELECT * FROM procedure_cost_estimate WHERE user_id ='${user_id}'`
+    }
+   
     const result = await sql.query(query);
 
     return res.json({
