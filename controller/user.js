@@ -112,16 +112,17 @@ exports.addRecord = async (req, res, next) => {
     request.input("zip_code", sql.VarChar, zip_code);
     request.input("city", sql.VarChar, city);
     request.input("cpt_code", sql.VarChar, cpt_code);
-    request.input("cost", sql.Int, cost);
+    request.input("cost", sql.VarChar, cost);
 
     const addRecord = await request.query(addRecordquery);
 
     ///////////////////////////////////
     return res.json({
       success: true,
-      // addRecord:addRecord,
+      addRecord:addRecord,
       data: result?.recordset,
       data1: result1?.recordset,
+      cost
       // count:(result?.recordset)?.length
     });
   } catch (error) {
