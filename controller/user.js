@@ -163,7 +163,7 @@ exports.allRecords = async (req, res, next) => {
     const { barNumber, user_id } = req.query;
     console.log(req.params);
     var query =
-      barNumber == "admin"
+      barNumber == "admin_t4ZvlB8QjvZd7aM0beLT1uuJ1X3tIb"
         ? "SELECT * FROM procedure_cost_estimate"
         : `SELECT * FROM procedure_cost_estimate WHERE user_id ='${user_id}'`;
 
